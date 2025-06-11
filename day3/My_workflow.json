@@ -1,0 +1,175 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here is the data:\n{{ $json.markdown }}\n\nStart with the subject line: Daily Work Update\n\nBegin the email with a professional greeting, e.g., “Dear Management,”\n\nProvide a summary count of the number of team members under each category:\n\n✅ Completed: [number]\n\n🚧 Blocked: [number]\n\n📝 Planned: [number]\n\nPresent each category in its own section, with a bolded heading and relevant emoji\n\nUnder each section, list the team member names as bullet points (-)\n\nConclude with a polite closing line such as: “Please let me know if you need any further information.”\n\nSign off with “Regards” and the sender name or role (e.g., “DT Team”)\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        540,
+        -60
+      ],
+      "id": "bc811c95-3f28-4fea-b386-fffc67c46584",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        540,
+        180
+      ],
+      "id": "5f50e816-a595-4c69-9aec-b91440a10ea4",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "1sKs1J8qSHa4IV7V",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "hari.t.dtywings@snsgroups.com",
+        "subject": "work report",
+        "emailType": "text",
+        "message": "=\n{{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1100,
+        -180
+      ],
+      "id": "f7f6e4fc-5c06-4df7-b639-202681e4fd77",
+      "name": "Gmail",
+      "webhookId": "66756e94-19b4-4bfb-ba7c-c7a63b1db58b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0FMOoeuUO7CwE1Zq",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "12Z5T7ey2r3Csn3Fv_aMuJULeS7nN3sVE-iGzENz_5dY",
+          "mode": "list",
+          "cachedResultName": "Task Report (Responses)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12Z5T7ey2r3Csn3Fv_aMuJULeS7nN3sVE-iGzENz_5dY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 773437562,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12Z5T7ey2r3Csn3Fv_aMuJULeS7nN3sVE-iGzENz_5dY/edit#gid=773437562"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d486d393-4b24-48c5-87f2-806e8012054d",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "9xW6Y5PpxpmDJtVV",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all().map((item) => item.json);\nconst headers = Object.keys(items[0]);\n\nlet markdown = headers.join(\" | \") + \"\\n\";\nmarkdown += headers.map(() => \"---\").join(\" | \") + \"\\n\";\n\nitems.forEach((item) => {\n  markdown += Object.values(item).join(\" | \") + \"\\n\";\n});\n\nreturn { markdown };\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "3df5667b-23d6-4fb3-9474-ee9fe1ded6e3",
+      "name": "Code"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "660e6690-2ca8-45ba-a50b-8d6d1d282f32",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7d5eeb59432deffd92289e421a0ce921f64c3e236121cf863104824f1d57d156"
+  },
+  "id": "qOGg4xB9Ab58zIBK",
+  "tags": []
+}
