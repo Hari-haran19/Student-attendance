@@ -1,0 +1,562 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "7c5e64ef-fb24-45ec-b47f-9b3aa6764fc1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2c4cfc2c-2f07-4db1-b4de-c1f8f6047eec",
+      "name": "Webhook",
+      "webhookId": "7c5e64ef-fb24-45ec-b47f-9b3aa6764fc1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst tableFormatItems = items.map((item) => {\n  const headers = item?.json?.headers;\n  const body = item?.json?.body;\n\n  return {\n    ...headers,\n    ...body,\n  };\n});\n\nreturn tableFormatItems;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "8197c7f6-d3d9-4e88-9331-c2a117bae2f2",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1D6JYaQruD9-_HSeiO0dKTRFVHq50Bch_WUSta2ki8Mw",
+          "mode": "list",
+          "cachedResultName": "work report",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6JYaQruD9-_HSeiO0dKTRFVHq50Bch_WUSta2ki8Mw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6JYaQruD9-_HSeiO0dKTRFVHq50Bch_WUSta2ki8Mw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "host",
+              "displayName": "host",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "user-agent",
+              "displayName": "user-agent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "content-length",
+              "displayName": "content-length",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "accept",
+              "displayName": "accept",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "accept-encoding",
+              "displayName": "accept-encoding",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cdn-loop",
+              "displayName": "cdn-loop",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cf-connecting-ip",
+              "displayName": "cf-connecting-ip",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cf-ew-via",
+              "displayName": "cf-ew-via",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cf-ipcountry",
+              "displayName": "cf-ipcountry",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cf-ray",
+              "displayName": "cf-ray",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cf-visitor",
+              "displayName": "cf-visitor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cf-worker",
+              "displayName": "cf-worker",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "content-type",
+              "displayName": "content-type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "x-forwarded-for",
+              "displayName": "x-forwarded-for",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "x-forwarded-host",
+              "displayName": "x-forwarded-host",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "x-forwarded-port",
+              "displayName": "x-forwarded-port",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "x-forwarded-proto",
+              "displayName": "x-forwarded-proto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "x-forwarded-server",
+              "displayName": "x-forwarded-server",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "x-is-trusted",
+              "displayName": "x-is-trusted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "x-real-ip",
+              "displayName": "x-real-ip",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "work_title",
+              "displayName": "work_title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "team_name",
+              "displayName": "team_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        660,
+        0
+      ],
+      "id": "4afba8a1-ce27-4792-a2ef-4ebf5d963463",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "VxsEw3DuEddidUf8",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ad089f2f-8835-4e7f-968d-bf3274fec15b",
+              "name": "work_title",
+              "value": "={{ $json.work_title }}",
+              "type": "string"
+            },
+            {
+              "id": "bc6f80c5-fd6f-4211-bf86-dde334195209",
+              "name": "status",
+              "value": "={{ $json.status }}",
+              "type": "string"
+            },
+            {
+              "id": "93ef64a6-24e8-48ca-9148-098cf6ea1202",
+              "name": "team_name",
+              "value": "={{ $json.team_name }}",
+              "type": "string"
+            },
+            {
+              "id": "a15bbb08-f58a-4bfd-836f-17870adec1d8",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "a8118843-523f-4e8a-97a5-a568946c25b9",
+              "name": "date",
+              "value": "={{ $json.date }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        0
+      ],
+      "id": "db204159-b259-4514-b518-c8a820ddf960",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1D6JYaQruD9-_HSeiO0dKTRFVHq50Bch_WUSta2ki8Mw",
+          "mode": "list",
+          "cachedResultName": "work report",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6JYaQruD9-_HSeiO0dKTRFVHq50Bch_WUSta2ki8Mw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6JYaQruD9-_HSeiO0dKTRFVHq50Bch_WUSta2ki8Mw/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        880,
+        0
+      ],
+      "id": "34541daa-ad06-43cd-82ce-272b5f2daae2",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "VxsEw3DuEddidUf8",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Task:\nGenerate a professional email to management regarding the work status report.\n\nInputs:\n\nTeam Name: {{ $json.team_name }}\n\nTitle of the Work:{{ $json.work_title }}\n\nCompleted Status: {{ $json.status }}\n\nDate: {{ $json.date }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        0
+      ],
+      "id": "3a6d924d-8b99-404d-866a-aad8bdd1f3b8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        220
+      ],
+      "id": "0a1e84cc-4efc-40a9-a457-19502432ae2e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "1sKs1J8qSHa4IV7V",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "=hari.t.dtywings@snsgroups.com",
+        "subject": "Work report",
+        "message": "={{ $json.output }}",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1460,
+        0
+      ],
+      "id": "73893888-7c13-44a6-8dd1-136e121ec015",
+      "name": "Gmail",
+      "webhookId": "f58e526e-c961-4600-a6ce-ccf526294a11",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0FMOoeuUO7CwE1Zq",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cd51b845-68bc-41e0-ae6b-ba22ef11d90e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7d5eeb59432deffd92289e421a0ce921f64c3e236121cf863104824f1d57d156"
+  },
+  "id": "sZt9GFfeudqmxZiK",
+  "tags": []
+}
