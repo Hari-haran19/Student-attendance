@@ -1,0 +1,282 @@
+{
+  "name": "My workflow copy",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e13feee5-3213-44aa-b56c-0110fc03731c",
+        "responseMode": "=onReceived",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b2b3b37e-6fb3-4efc-b752-9375bee9b295",
+      "name": "Webhook",
+      "webhookId": "e13feee5-3213-44aa-b56c-0110fc03731c"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a smart student club advisor at a university.\n\nYour task is to recommend the most suitable club for a student based strictly on their interests and hobbies. \n\nYou must only recommend from the following list of 19 official student clubs:\n\n1. MUN  \n2. Pets Club (Muddy paws)  \n3. Robotics Club  \n4. Rotaract Club  \n5. Arts with Hearts Club  \n6. Fashion Studio Club  \n7. Young Entrepreneur Club  \n8. Foodies Hub  \n9. National Cadet Corps  \n10. Gear Shifters  \n11. Feel the Beat (Dance club)  \n12. Toast Masters Club  \n13. Round Square Club  \n14. SANTA 365  \n15. Women Empowerment  \n16. Travel Trek Club  \n17. Rhythm Lounge (Music Club)  \n18. Aero Modelling Club  \n19. Snapture (Photography club)\n\n---\n\nStudent Information:\n- Interests: {{ $json.body.interests }}\n- Hobbies: {{ $json.body.hobbies }}\n- Profile Link: {{ $json.body.profile_link }} (\n\nBased only on the interests and hobbies, return the most relevant club from the list in this **strict JSON format**:\n\n```json\n{\n  \"club_name\": \"<exact name from the list above>\",\n  \"reason\": \"<why this club matches the student>\",\n  \"confidence\": <float between 0.0 and 1.0>\n}\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "20d7979a-8f6c-42f8-b448-752ddc9a047a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        260,
+        220
+      ],
+      "id": "ad6ad274-07ba-4ebd-ac4a-b6e2fafd75fe",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "jCqIjn7YNoU8a5we",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1p1McTgDVozw1yTkRNANxoMXMhsjynXkr7E0CGDHtgC8",
+          "mode": "list",
+          "cachedResultName": "Student allocation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1p1McTgDVozw1yTkRNANxoMXMhsjynXkr7E0CGDHtgC8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1p1McTgDVozw1yTkRNANxoMXMhsjynXkr7E0CGDHtgC8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Club Name": "={{ $json.output.club_name }}",
+            "Reason": "={{ $json.output.reason }}",
+            "Student Name": "={{ $('Webhook').item.json.body.name }}"
+          },
+          "matchingColumns": [
+            "Student Name"
+          ],
+          "schema": [
+            {
+              "id": "Student Name",
+              "displayName": "Student Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Club Name",
+              "displayName": "Club Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reason",
+              "displayName": "Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1000,
+        0
+      ],
+      "id": "e8704e8c-ab57-4c2d-8546-2e89bbaaeb21",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "BfL9THES2DwLMU18",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.output }}",
+        "schemaType": "fromJson",
+        "jsonSchemaExample": "{\n  \"club_name\": \"Toast Masters Club\",\n  \"reason\": \"The student's interest in communication and gaming (strategy, quick thinking) aligns well with the public speaking and communication skills fostered in Toast Masters. Reading books also contributes to improved vocabulary and articulation, further enhancing their suitability for this club.\",\n  \"confidence\": 0.8\n}\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        580,
+        0
+      ],
+      "id": "701c0381-ffc9-42be-97c7-1228a483e50e",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        586,
+        220
+      ],
+      "id": "65bc9cff-d69d-446b-9268-d67e5c306bc1",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "jCqIjn7YNoU8a5we",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Webhook').item.json.body.email }}",
+        "subject": "=You're matched with the {{ $('Information Extractor').item.json.output.club_name }}!",
+        "message": "=<p>Hi <strong>{{ $('Webhook').item.json.body.name }}</strong>,</p>\n\n    <p>\n      We’re excited to share that based on your interests and profile, we've matched you with:\n      <strong>{{ $('Information Extractor').item.json.output.club_name }}</strong>!\n    </p>\n\n    <p>\n      <strong>Reason for Match:</strong><br>\n      {{ $('Information Extractor').item.json.output.reason }}\n    </p>\n\n    <p>\n      This club aligns with your hobbies and skills, and will provide you with opportunities to grow, collaborate, and showcase your talents through relevant events and activities.\n    </p>\n\n    <p>\n      <strong>What’s Next?</strong><br>\n      You’ll receive details on how to confirm your Club and participate in upcoming events.\n    </p>\n\n    <p>\n      If you have any questions or need support, feel free to reach out. We're here to help you thrive!\n    </p>\n\n    <p>\n      Best regards,<br>\n      <strong>Student Club Coordination Team</strong>\n    </p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1280,
+        0
+      ],
+      "id": "5184d5b4-1011-40ed-b950-81378538e53f",
+      "name": "Gmail",
+      "webhookId": "b9b6dfc1-fe7f-4c16-aec8-edad4d172998",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Oazn5DWsc5vhlcUZ",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c6a6d685-2016-486e-983e-2411a5b11159",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "29a2c2bd62c1b0422585536c7572f92996819dd1f61d197e12480adeff8cb1d3"
+  },
+  "id": "nTcjicYjilF649kl",
+  "tags": []
+}
